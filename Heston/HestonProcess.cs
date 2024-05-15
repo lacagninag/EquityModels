@@ -31,7 +31,7 @@ namespace Heston
     [Serializable]
     public unsafe class HestonProcess : IExtensibleProcess, IMarkovSimulator, IParsable,
                                         IGreeksDerivativesInfo, IEstimationResultPopulable,
-                                        IOpenCLCode, IExportableContainer, IPlainVanillaPricing, IForwardStartingPricing
+                                        IOpenCLCode, IExportableContainer, IForwardStartingPricing
     {
         #region Serialized Parameters
 

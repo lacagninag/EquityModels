@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 using System;
 using DVPLI;
 using HestonEstimator;
 using NUnit.Framework;
+using HestonFS;
+
 
 namespace Heston
 {
@@ -84,11 +85,11 @@ namespace Heston
             double rho = -0.8;
 
             // Calculates the theoretical value of the call.
-            
+
             double fairmatPrice = HestonCall.HestonCallPrice(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double carrMadanPrice = HestonCall.HestonCallPriceCarrMadan(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double tol = 1e-3;
-            
+
 
             Console.WriteLine("Theoretical CarrMadan  Price = " + carrMadanPrice);
             Console.WriteLine("Theoretical Fairmat    Price = " + fairmatPrice);
@@ -149,7 +150,7 @@ namespace Heston
             var analyticalVega = HestonVega.VegaCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
 
 
-            (double delta, double gamma) = HestonNumericalGreeks.DeltaGammaCall(bumpPercentage : 0.001, kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
+            (double delta, double gamma) = HestonNumericalGreeks.DeltaGammaCall(bumpPercentage: 0.001, kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double expectedDelta = 0.6459985446;
             Assert.AreEqual(expectedDelta, delta, 1e-3);
             Assert.AreEqual(analyticalDelta, delta, 1e-3);
@@ -173,7 +174,7 @@ namespace Heston
             // Assert.AreEqual(analyticalVega, vega, 1e-3);
 
 
-            double thetaGreek = HestonNumericalGreeks.ThetaCall(bumpPercentage: 0.001, kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);  
+            double thetaGreek = HestonNumericalGreeks.ThetaCall(bumpPercentage: 0.001, kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double expectedTheta = 0.0494223;
             Assert.AreEqual(expectedTheta, thetaGreek, 1e-3);
 
@@ -252,7 +253,7 @@ namespace Heston
             // Calculates the greeks.
             Engine.Verbose = 0;
 
-            (var numericalDelta, var numericalGamma) = HestonNumericalGreeks.DeltaGammaFSCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, T0: T0, K: k, r: rate, q: dy); 
+            (var numericalDelta, var numericalGamma) = HestonNumericalGreeks.DeltaGammaFSCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, T0: T0, K: k, r: rate, q: dy);
             var numericalRho = HestonNumericalGreeks.RhoFSCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, T0: T0, K: k, r: rate, q: dy);
             var numericalVega = HestonNumericalGreeks.VegaFSCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, T0: T0, K: k, r: rate, q: dy);
             var numericalTheta = HestonNumericalGreeks.ThetaFSCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, T0: T0, K: k, r: rate, q: dy);
@@ -382,6 +383,34 @@ namespace Heston
 
         }
 
+        [Test]
+        public void TestNumericalGreeksFSharp()
+        {
+            double k = 90;
+            double tau = 2.0;
+            double rate = 0.1;
+            double dy = 0.07;
+            double kappa = 2.5;
+            double theta = 0.4;
+            double sigma = 0.2;
+            double s0 = 100.0;
+            double v0 = 0.3;
+            double rho = -0.8;
 
+
+
+            var instance = new HestonGreekF.HestonInstance(k:k, kappa:kappa, theta: theta, sigma: sigma, rho: rho, s0: s0, t:tau, v0: v0, r:rate, q:dy);
+
+            // Calculates the theoretical value of the call.
+
+            var (delta, gamma) = HestonNumericalGreeks.DeltaGammaCall(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
+
+            var (deltaF, gammaF) = HestonGreekF.HestonNumericalGreeks.DeltaGammaCall(instance, null, null);
+
+
+            Assert.AreEqual(delta, deltaF);
+            Assert.AreEqual(gamma, gammaF);
+
+        }
     }
 }
