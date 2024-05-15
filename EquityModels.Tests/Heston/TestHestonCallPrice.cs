@@ -58,7 +58,7 @@ namespace Heston
             param[2] = sigma;
             param[3] = rho;
             param[4] = v0;
-            double fairmatPrice = HestonCall.HestonCallPrice(param, s0, tau, k, rate, dy);
+            double fairmatPrice = HestonEstimator.HestonCall.HestonCallPrice(param, s0, tau, k, rate, dy);
             double tol = 1e-3;
             double benchmarkPrice = 0.339537359104676;
 
@@ -86,8 +86,8 @@ namespace Heston
 
             // Calculates the theoretical value of the call.
 
-            double fairmatPrice = HestonCall.HestonCallPrice(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
-            double carrMadanPrice = HestonCall.HestonCallPriceCarrMadan(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
+            double fairmatPrice = HestonEstimator.HestonCall.HestonCallPrice(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
+            double carrMadanPrice = HestonEstimator.HestonCall.HestonCallPriceCarrMadan(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double tol = 1e-3;
 
 
@@ -116,7 +116,7 @@ namespace Heston
 
             // Calculates the theoretical value of the call.
 
-            double fairmatPrice = HestonCall.HestonCallPrice(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
+            double fairmatPrice = HestonEstimator.HestonCall.HestonCallPrice(kappa: kappa, theta: theta, sigma: sigma, rho: rho, v0: v0, s0: s0, T: tau, K: k, r: rate, q: dy);
             double quantlibPrice = 34.08981109547019;
 
             var relativeDifference = Math.Abs(fairmatPrice - quantlibPrice) / quantlibPrice;
@@ -399,7 +399,7 @@ namespace Heston
 
 
 
-            var instance = new HestonGreekF.HestonInstance(k:k, kappa:kappa, theta: theta, sigma: sigma, rho: rho, s0: s0, t:tau, v0: v0, r:rate, q:dy);
+            var instance = new HestonContext.HestonInstance(k:k, kappa:kappa, theta: theta, sigma: sigma, rho: rho, s0: s0, t:tau, v0: v0, r:rate, q:dy);
 
             // Calculates the theoretical value of the call.
 

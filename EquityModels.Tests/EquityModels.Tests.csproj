@@ -127,8 +127,8 @@
       <Project>{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}</Project>
       <Name>PFunction2D</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HestonFS\HestonFS\HestonFS.fsproj">
-      <Project>{42b1d43d-1ccc-4bb5-8aeb-d288b3c3c0ca}</Project>
+    <ProjectReference Include="..\HestonFS\HestonFS.fsproj">
+      <Project>{aa6deb1b-bc6d-47e9-80d3-50ea8154c07e}</Project>
       <Name>HestonFS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Heston\Heston.csproj">
